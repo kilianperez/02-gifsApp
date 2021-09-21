@@ -26,8 +26,13 @@ export class BusquedaComponent {
     const valor = this.txtBuscar.nativeElement.value;
     // console.log(valor);
 
-    // enviamos el valor de lo buscado en el input al servicio 
+    // evitar valores duplicados y vacios
 
+    if (valor.trim().length === 0) {
+      return;
+    }
+
+    // enviamos el valor de lo buscado en el input al servicio 
     this.gifsService.buscarGifs(valor)
 
     // vaciar el valor del Input como en js pero mejor con el @viewChild
