@@ -1,2 +1,16 @@
 <h5>Buscar:</h5>
-<input type="text" class="form-control" placeholder="Buscar Gifs" />
+<!-- Cuando un usuario presiona y suelta una tecla, keyupse produce el evento y Angular proporciona un objeto de evento DOM correspondiente en la $event variable que este código pasa como parámetro al onKey()método del componente.
+Con el.enter se activa cuando presionamos enter
+
+#txtBuscar es una referencia Local
+-->
+<input 
+    type="text" 
+    class="form-control" 
+    placeholder="Buscar Gifs" 
+    (keyup.enter)="buscar()"
+    #txtBuscar
+    
+    
+    />
+    <!-- (keyup.enter)="buscar(txtBuscar.value)" -->
