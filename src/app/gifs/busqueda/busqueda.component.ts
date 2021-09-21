@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { GifsService } from '../services/gifs.service';
 
 @Component({
   selector: 'app-busqueda',
@@ -14,12 +15,20 @@ export class BusquedaComponent {
 
   @ViewChild('txtBuscar') txtBuscar!: ElementRef<HTMLInputElement>;
 
+  // inyectamos el servicio 
+
+  constructor(private gifsService: GifsService){}
+
   buscar() {
     // buscar(termino: string) {
     // console.log(termino);
     // console.log(this.txtBuscar);
     const valor = this.txtBuscar.nativeElement.value;
-    console.log(valor);
+    // console.log(valor);
+
+    // enviamos el valor de lo buscado en el input al servicio 
+
+    this.gifsService.buscarGifs(valor)
 
     // vaciar el valor del Input como en js pero mejor con el @viewChild
     // document.querySelector('input').value = '';
