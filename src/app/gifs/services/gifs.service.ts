@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SearchGifsResponse, Gif } from '../interface/gifs.interface';
 
 @Injectable({
   // con este inyectable el servicio esta de forma global, si no queremos que asi sea lo tenemos que importar en el correspondiente modulo
@@ -12,14 +13,14 @@ export class GifsService {
   // lo iniciamos de forma privada y por eso le añadimos el guión bajo
   private _historial: string[] = [];
 
-  // TODO: Cambiar el any por su tipo 
-  public resultados: any[] = []
+  // TODO: Cambiar el any por su tipo
+  public resultados: Gif[] = [];
 
   get historial() {
     // [...]creamos un nuevo array
     return [...this._historial];
   }
-  constructor(private http : HttpClient){}
+  constructor(private http: HttpClient) {}
   buscarGifs(query: string = '') {
     query = query.trim().toLocaleLowerCase();
 
@@ -48,11 +49,11 @@ export class GifsService {
     const data = await resp.json();
     console.log(data);
     */
-    this.http.get(
-      `https://api.giphy.com/v1/gifs/search?api_key=KbTxm2B0Dp7cATeK7Hf2KVRi8kWo79g3&q=${query}&limit=10`
-    ).subscribe((resp: any) =>{
-      console.log(resp.data);
-      this.resultados = resp.data
-    });
+    this.http.get<SearchGifsResponse>(
+        `https://api.giphy.com/v1/gifs/search?api_key=KbTxm2B0Dp7cATeK7Hf2KVRi8kWo79g3&q=${query}&limit=10`
+      ).subscribe((resp) => {
+        console.log(resp.data);
+        this.resultados = resp.data;
+      });
   }
 }
