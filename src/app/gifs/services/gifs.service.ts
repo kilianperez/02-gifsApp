@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SearchGifsResponse, Gif } from '../interface/gifs.interface';
 
@@ -9,6 +9,7 @@ import { SearchGifsResponse, Gif } from '../interface/gifs.interface';
 export class GifsService {
   // api de https://developers.giphy.com/
   private apiKey: string = 'KbTxm2B0Dp7cATeK7Hf2KVRi8kWo79g3';
+  private servicioUrl: string = 'https://api.giphy.com/v1/gifs';
 
   // lo iniciamos de forma privada y por eso le añadimos el guión bajo
   private _historial: string[] = [];
@@ -21,14 +22,13 @@ export class GifsService {
     return [...this._historial];
   }
   constructor(private http: HttpClient) {
-    // cargar del local storage 
+    // cargar del local storage
     // if (localStorage.getItem('historial')) {
     //   this._historial = JSON.parse(localStorage.getItem('historial')!)
     // }
-    // lo mismo que anterior pero en una sola linea 
+    // lo mismo que anterior pero en una sola linea
     this._historial = JSON.parse(localStorage.getItem('historial')!) || [];
     this.resultados = JSON.parse(localStorage.getItem('resultados')!) || [];
-
   }
   buscarGifs(query: string = '') {
     query = query.trim().toLocaleLowerCase();
@@ -61,13 +61,23 @@ export class GifsService {
     const data = await resp.json();
     console.log(data);
     */
-    this.http.get<SearchGifsResponse>(
-        `https://api.giphy.com/v1/gifs/search?api_key=KbTxm2B0Dp7cATeK7Hf2KVRi8kWo79g3&q=${query}&limit=10`
-      ).subscribe((resp) => {
+
+    // Permite construir los parametros de la peticion a la API
+    const params = new HttpParams()
+      .set('api_key', this.apiKey)
+      .set('limit', '10')
+      .set('q', query);
+
+    // console.log(params.toString());
+
+    this.http
+      .get<SearchGifsResponse>(
+        `${this.servicioUrl}/search`, {params}
+      )
+      .subscribe((resp) => {
         console.log(resp.data);
         this.resultados = resp.data;
-        
       });
-      this.resultados = JSON.parse(localStorage.getItem('resultados')!) || [];
+    this.resultados = JSON.parse(localStorage.getItem('resultados')!) || [];
   }
 }
