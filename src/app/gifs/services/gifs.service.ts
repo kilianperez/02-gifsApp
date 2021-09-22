@@ -75,7 +75,7 @@ export class GifsService {
         `${this.servicioUrl}/search`, {params}
       )
       .subscribe((resp) => {
-        console.log(resp.data);
+        // console.log(resp.data);
         this.resultados = resp.data;
       });
     this.resultados = JSON.parse(localStorage.getItem('resultados')!) || [];
