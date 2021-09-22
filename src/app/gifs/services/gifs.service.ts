@@ -12,6 +12,9 @@ export class GifsService {
   // lo iniciamos de forma privada y por eso le añadimos el guión bajo
   private _historial: string[] = [];
 
+  // TODO: Cambiar el any por su tipo 
+  public resultados: any[] = []
+
   get historial() {
     // [...]creamos un nuevo array
     return [...this._historial];
@@ -46,10 +49,10 @@ export class GifsService {
     console.log(data);
     */
     this.http.get(
-      'https://api.giphy.com/v1/gifs/search?api_key=KbTxm2B0Dp7cATeK7Hf2KVRi8kWo79g3&q=dragon ball z&limit=10'
+      `https://api.giphy.com/v1/gifs/search?api_key=KbTxm2B0Dp7cATeK7Hf2KVRi8kWo79g3&q=${query}&limit=10`
     ).subscribe((resp: any) =>{
       console.log(resp.data);
-      
+      this.resultados = resp.data
     });
   }
 }
