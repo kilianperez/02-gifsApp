@@ -20,7 +20,15 @@ export class GifsService {
     // [...]creamos un nuevo array
     return [...this._historial];
   }
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // cargar del local storage 
+    // if (localStorage.getItem('historial')) {
+    //   this._historial = JSON.parse(localStorage.getItem('historial')!)
+    // }
+    // lo mismo que anterior pero en una sola linea 
+    this._historial = JSON.parse(localStorage.getItem('historial')!) || [];
+
+  }
   buscarGifs(query: string = '') {
     query = query.trim().toLocaleLowerCase();
 
@@ -29,6 +37,9 @@ export class GifsService {
       this._historial.unshift(query);
       // evitar que se añadan mas de 10 elementos en el array
       this._historial = this._historial.splice(0, 10);
+
+      // grabar la informacion en el local Storage 
+      localStorage.setItem('historial',JSON.stringify( this._historial) )
     }
     // console.log(this._historial);
 
